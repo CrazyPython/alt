@@ -100,7 +100,7 @@ declare module "alt/types" {
     batchingFunction?:(callback:( ...data:Array<any>) => any) => void;
   }
 
-  class Alt {
+  export class Alt {
     constructor(config?:AltConfig);
     actions:Actions;
     bootstrap(jsonData:string):void;
