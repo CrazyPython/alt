@@ -1,8 +1,8 @@
 {
-  "presets": ["airbnb", "stage-0"],
+  "presets": ["babel-preset-es2015-node", "babel-preset-stage-0"],
   "plugins": [
-    "add-module-exports",
     "transform-class-properties",
     ["transform-es2015-classes", { loose: true }],
   ]
 }
+

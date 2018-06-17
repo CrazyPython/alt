@@ -33,10 +33,10 @@ declare module "alt/typings" {
     //events
     onSerialize?(fn:(data:any) => any):void;
     onDeserialize?(fn:(data:any) => any):void;
-    on?(event:AltJS.lifeCycleEvents, callback:() => any):void;
+    on?(event:lifeCycleEvents, callback:() => any):void;
     emitChange?():void;
     waitFor?(storeOrStores:AltStore<any> | Array<AltStore<any>>):void;
-    otherwise?(data:any, action:AltJS.Action<any>):void;
+    otherwise?(data:any, action:Action<any>):void;
     observe?(alt:Alt):any;
     reduce?(state:any, config:StoreReduce):Object;
     preventDefault?():void;
@@ -46,7 +46,7 @@ declare module "alt/typings" {
     dispatcher?:any;
 
     //instance
-    getInstance?():AltJS.AltStore<S>;
+    getInstance?():AltStore<S>;
     alt?:Alt;
     displayName?:string;
   }
@@ -90,7 +90,7 @@ declare module "alt/typings" {
     actions?:Actions;
   }
 
-  type StateTransform = (store:StoreModel<any>) => AltJS.AltStore<any>;
+  type StateTransform = (store:StoreModel<any>) => AltStore<any>;
 
   interface AltConfig {
     dispatcher?:any;
@@ -106,28 +106,28 @@ declare module "alt/typings" {
     bootstrap(jsonData:string):void;
     takeSnapshot( ...storeNames:Array<string>):string;
     flush():Object;
-    recycle( ...stores:Array<AltJS.AltStore<any>>):void;
+    recycle( ...stores:Array<AltStore<any>>):void;
     rollback():void;
-    dispatch(action?:AltJS.Action<any>, data?:Object, details?:any):void;
+    dispatch(action?:Action<any>, data?:Object, details?:any):void;
 
     //Actions methods
     addActions(actionsName:string, ActionsClass: ActionsClassConstructor):void;
     createActions<T>(ActionsClass: ActionsClassConstructor, exportObj?: Object):T;
     createActions<T>(ActionsClass: ActionsClassConstructor, exportObj?: Object, ...constructorArgs:Array<any>):T;
     generateActions<T>( ...actions:Array<string>):T;
-    getActions(actionsName:string):AltJS.Actions;
+    getActions(actionsName:string):Actions;
 
     //Stores methods
     addStore(name:string, store:StoreModel<any>, saveStore?:boolean):void;
-    createStore<S>(store:StoreModel<S>, name?:string):AltJS.AltStore<S>;
-    getStore(name:string):AltJS.AltStore<any>;
+    createStore<S>(store:StoreModel<S>, name?:string):AltStore<S>;
+    getStore(name:string):AltStore<any>;
   }
 
   export interface AltFactory {
     new(config?:AltConfig):Alt;
   }
 
-  type ActionsClassConstructor = new (alt:Alt) => AltJS.ActionsClass;
+  type ActionsClassConstructor = new (alt:Alt) => ActionsClass;
 
   type ActionHandler = ( ...data:Array<any>) => any;
   type ExportConfig = {[key:string]:(...args:Array<any>) => any};
