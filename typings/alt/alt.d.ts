@@ -6,7 +6,7 @@
 ///<reference path="../react/react.d.ts"/>
 ///<reference path="../es6-promise/es6-promise.d.ts" />
 
-declare module "alt/types" {
+declare module "alt/typings" {
 
   interface StoreReduce {
     action:any;
