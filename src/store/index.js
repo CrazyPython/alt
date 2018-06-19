@@ -7,19 +7,19 @@ function doSetState(store, storeInstance, state) {
   if (!state) {
     return
   }
-
+  
   const { config } = storeInstance.StoreModel
-
+  
   const nextState = fn.isFunction(state)
     ? state(storeInstance.state)
     : state
-
+  
   storeInstance.state = config.setState.call(
     store,
     storeInstance.state,
     nextState
   )
-
+  
   if (!store.alt.dispatcher.isDispatching()) {
     store.emitChange()
   }
@@ -49,7 +49,7 @@ export function createStoreConfig(globalConfig, StoreModel) {
       } else if (fn.isMutableObject(state)) {
         return fn.assign({}, state)
       }
-
+      
       return state
     },
     setState(currentState, nextState) {
@@ -67,8 +67,11 @@ export function transformStore(transforms, StoreModel) {
 
 export function createStoreFromObject(alt, StoreModel, key) {
   let storeInstance
-
+  
   const StoreProto = createPrototype({}, alt, key, fn.assign({
+    get source() {
+      return storeInstance
+    },
     getInstance() {
       return storeInstance
     },
@@ -76,7 +79,7 @@ export function createStoreFromObject(alt, StoreModel, key) {
       doSetState(this, storeInstance, nextState)
     },
   }, StoreModel))
-
+  
   // bind the store listeners
   /* istanbul ignore else */
   if (StoreProto.bindListeners) {
@@ -92,7 +95,7 @@ export function createStoreFromObject(alt, StoreModel, key) {
       StoreProto.observe(alt),
     )
   }
-
+  
   // bind the lifecycle events
   /* istanbul ignore else */
   if (StoreProto.lifecycle) {
@@ -100,7 +103,7 @@ export function createStoreFromObject(alt, StoreModel, key) {
       StoreMixin.on.call(StoreProto, eventName, event)
     }, [StoreProto.lifecycle])
   }
-
+  
   // create the instance and fn.assign the public methods to the instance
   storeInstance = fn.assign(
     new AltStore(
@@ -115,14 +118,14 @@ export function createStoreFromObject(alt, StoreModel, key) {
       config: StoreModel.config,
     }
   )
-
+  
   return storeInstance
 }
 
 export function createStoreFromClass(alt, StoreModel, key, ...argsForClass) {
   let storeInstance
   const { config } = StoreModel
-
+  
   // Creating a class here so we don't overload the provided store's
   // prototype with the mixin behaviour and I'm extending from StoreModel
   // so we can inherit any extensions from the provided store.
@@ -131,7 +134,7 @@ export function createStoreFromClass(alt, StoreModel, key, ...argsForClass) {
       super(...args)
     }
   }
-
+  
   createPrototype(Store.prototype, alt, key, {
     type: 'AltStore',
     getInstance() {
@@ -141,14 +144,14 @@ export function createStoreFromClass(alt, StoreModel, key, ...argsForClass) {
       doSetState(this, storeInstance, nextState)
     },
   })
-
+  
   const store = new Store(...argsForClass)
-
+  
   /* istanbul ignore next */
   if (config.bindListeners) store.bindListeners(config.bindListeners)
-    /* istanbul ignore next */
+  /* istanbul ignore next */
   if (config.datasource) store.registerAsync(config.datasource)
-
+  
   storeInstance = fn.assign(
     new AltStore(
       alt,
@@ -160,6 +163,6 @@ export function createStoreFromClass(alt, StoreModel, key, ...argsForClass) {
     config.publicMethods,
     { displayName: key },
   )
-
+  
   return storeInstance
 }
