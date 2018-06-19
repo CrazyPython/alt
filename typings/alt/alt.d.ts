@@ -46,6 +46,7 @@ declare module "alt/typings" {
     dispatcher?:any;
 
     //instance
+    readonly source?:AltStore<S>;
     getInstance?():AltStore<S>;
     alt?:Alt;
     displayName?:string;
