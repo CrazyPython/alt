@@ -130,6 +130,9 @@ export function createStoreFromClass(alt, StoreModel, key, ...argsForClass) {
   // prototype with the mixin behaviour and I'm extending from StoreModel
   // so we can inherit any extensions from the provided store.
   class Store extends StoreModel {
+    get source() {
+      return storeInstance
+    }
     constructor(...args) {
       super(...args)
     }
@@ -137,6 +140,9 @@ export function createStoreFromClass(alt, StoreModel, key, ...argsForClass) {
   
   createPrototype(Store.prototype, alt, key, {
     type: 'AltStore',
+    get source() {
+      return storeInstance
+    },
     getInstance() {
       return storeInstance
     },
